@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todo 工具使用文档</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            margin: 0;
+            padding: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+        .command {
+            background: #f5f5f5;
+            border-left: 3px solid #4285f4;
+            padding: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .example {
+            background: #f9f9f9;
+            padding: 8px;
+            margin: 8px 0;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>todo 待办工具使用文档</h1>
+
+    <div class="section">
+        <h2>1. 简介</h2>
+        <p>命令行待办管理工具，支持添加、查看、修改、归档待办，及LLM自动提取待办信息。</p>
+    </div>
+
+
+    <div class="section">
+        <h2>2. 基本格式</h2>
+        <div class="command">todo [命令] [选项]</div>
+        <p>命令：add、print、set、archive、config、help</p>
+    </div>
+
+    <div class="section">
+        <h2>3. 命令说明</h2>
+
+        <h3>3.1 添加待办（add）</h3>
+        <div class="command">todo add [标题] [选项]</div>
+        <p>选项：</p>
+        <table>
+            <tr><th>选项</th><th>说明</th></tr>
+            <tr><td>-a, --auto</td><td>LLM自动提取（需配置API）</td></tr>
+            <tr><td>-d, --deadline</td><td>截止时间（格式："月.日-时:分"）</td></tr>
+            <tr><td>-t, --tags</td><td>标签（如"学习"）</td></tr>
+            <tr><td>-des, --description</td><td>描述信息</td></tr>
+        </table>
+        <p>示例：</p>
+        <div class="example">
+todo add "完成作业" -t "学习"<br>
+todo add "提交报告" -d "10.25-18:00" -des "季度总结"<br>
+todo add "周五3点开会" --auto
+        </div>
+
+        <h3>3.2 查看待办（print）</h3>
+        <div class="command">todo print [id]</div>
+        <p>id为序号（留空查所有）</p>
+        <div class="example">
+todo print<br>
+todo print 3
+        </div>
+
+        <h3>3.3 修改待办（set）</h3>
+        <div class="command">todo set [id] [选项]</div>
+        <p>选项：</p>
+        <table>
+            <tr><th>选项</th><th>说明</th></tr>
+            <tr><td>-f, --finish</td><td>标记完成</td></tr>
+            <tr><td>-t, --title</td><td>修改标题</td></tr>
+            <tr><td>-d, --deadline</td><td>修改截止时间</td></tr>
+            <tr><td>-de, --description</td><td>修改描述</td></tr>
+            <tr><td>-l, --location</td><td>修改地点</td></tr>
+            <tr><td>-ta, --tags</td><td>修改标签</td></tr>
+            <tr><td>-r, --remove</td><td>删除待办</td></tr>
+        </table>
+        <div class="example">
+todo set 2 -f<br>
+todo set 1 -d "10.26-20:00"<br>
+todo set 3 -r
+        </div>
+
+        <h3>3.4 归档待办（archive）</h3>
+        <div class="command">todo archive [id]</div>
+        <p>id留空则归档所有已完成项</p>
+        <div class="example">
+todo archive<br>
+todo archive 5
+        </div>
+
+        <h3>3.5 配置（config）</h3>
+        <div class="command">todo config [选项]</div>
+        <p>选项：</p>
+        <table>
+            <tr><th>选项</th><th>说明</th></tr>
+            <tr><td>-k, --key</td><td>设置API Key</td></tr>
+            <tr><td>-m, --model</td><td>设置模型</td></tr>
+            <tr><td>-a, --api_url</td><td>设置API地址</td></tr>
+        </table>
+        <div class="example">
+todo config -k "your_key"<br>
+todo config -m "gpt-3.5-turbo"<br>
+todo config  # 查看配置
+        </div>
+
+        <h3>3.6 帮助（help）</h3>
+        <div class="command">todo help</div>
+    </div>
+
+    <div class="section">
+        <h2>4. 数据存储</h2>
+        <ul>
+            <li>待办：~/.local/share/td/todo.json</li>
+            <li>归档：~/.local/share/td/archive.json</li>
+            <li>配置：~/.local/share/td/config.ini</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>5. 状态标识</h2>
+        <table>
+            <tr><th>标识</th><th>含义</th></tr>
+            <tr><td>⏩ 蓝色</td><td>进行中</td></tr>
+            <tr><td>✅ 绿色</td><td>已完成</td></tr>
+            <tr><td>❌ 红色</td><td>已超时</td></tr>
+        </table>
+    </div>
+</body>
+</html>
