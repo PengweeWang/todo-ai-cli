@@ -18,7 +18,7 @@
 1. **Python 版本**：3.8 及以上。
 2. **克隆仓库**：
    ```bash
-   git clone <your-fork-or-clone-url>
+   git clone https://github.com/PengweeWang/todo-ai-cli.git
    cd todo-ai
    ```
 3. **创建并激活虚拟环境（推荐）**：
