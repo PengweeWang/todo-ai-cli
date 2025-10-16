@@ -106,9 +106,9 @@ class ConfigManager:
     def __init__(self, config_path: str):
         self.config_path = config_path
         self.config = self.__load_config()
-        self.api_key = self.get_config('default', 'api_key')
-        self.base_url = self.get_config('default', 'base_url')
-        self.model_id = self.get_config('default', 'model_id')
+        self.api_key = self.get_config('api_key')
+        self.base_url = self.get_config('base_url')
+        self.model_id = self.get_config('model_id')
     
     def __load_config(self):
         """加载配置文件"""
